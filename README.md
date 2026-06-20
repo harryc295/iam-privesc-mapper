@@ -25,6 +25,12 @@ used, instead of just possible — feed its `--admin-roles` flag this
 project's `already-admin-equivalent` findings and every AssumeRole/PassRole
 alert there resolves to a confirmed severity instead of a guess.
 
+Same idea applied to AI agents instead of AWS IAM:
+[agent-privilege-mapper](https://github.com/harryc295/agent-privilege-mapper)
+finds dangerous tool-capability combinations (the "lethal trifecta") in
+Claude/MCP agent configs and tests prompt-injection resistance against the
+real Claude API.
+
 ## Quickstart (zero AWS setup)
 
 ```bash
