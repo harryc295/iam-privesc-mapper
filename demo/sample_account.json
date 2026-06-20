@@ -1,0 +1,107 @@
+{
+  "account_id": "111122223333",
+  "users": {
+    "alice": {
+      "name": "alice",
+      "arn": "arn:aws:iam::111122223333:user/alice",
+      "type": "user",
+      "policies": [
+        {
+          "source": "InlinePolicy:lambda-deploy",
+          "document": {
+            "Statement": [
+              {"Effect": "Allow", "Action": ["iam:PassRole", "lambda:CreateFunction", "lambda:InvokeFunction"], "Resource": "*"}
+            ]
+          }
+        }
+      ],
+      "groups": ["developers"]
+    },
+    "bob": {
+      "name": "bob",
+      "arn": "arn:aws:iam::111122223333:user/bob",
+      "type": "user",
+      "policies": [
+        {
+          "source": "AttachedManagedPolicy:ReadOnlyAccess",
+          "document": {
+            "Statement": [
+              {"Effect": "Allow", "Action": ["ec2:Describe*", "s3:List*", "s3:GetObject"], "Resource": "*"}
+            ]
+          }
+        }
+      ],
+      "groups": []
+    },
+    "dev-lead": {
+      "name": "dev-lead",
+      "arn": "arn:aws:iam::111122223333:user/dev-lead",
+      "type": "user",
+      "policies": [
+        {
+          "source": "InlinePolicy:basic",
+          "document": {"Statement": [{"Effect": "Allow", "Action": ["s3:GetObject"], "Resource": "*"}]}
+        }
+      ],
+      "groups": ["developers"]
+    },
+    "charlie": {
+      "name": "charlie",
+      "arn": "arn:aws:iam::111122223333:user/charlie",
+      "type": "user",
+      "policies": [
+        {
+          "source": "InlinePolicy:assume-only",
+          "document": {"Statement": [{"Effect": "Allow", "Action": ["sts:AssumeRole"], "Resource": "*"}]}
+        }
+      ],
+      "groups": []
+    }
+  },
+  "roles": {
+    "LegacyAutomationRole": {
+      "name": "LegacyAutomationRole",
+      "arn": "arn:aws:iam::111122223333:role/LegacyAutomationRole",
+      "type": "role",
+      "policies": [
+        {
+          "source": "InlinePolicy:full-admin-legacy",
+          "document": {"Statement": [{"Effect": "Allow", "Action": "*", "Resource": "*"}]}
+        }
+      ],
+      "trust_policy": {
+        "Statement": [
+          {"Effect": "Allow", "Principal": {"AWS": "arn:aws:iam::111122223333:user/charlie"}, "Action": "sts:AssumeRole"}
+        ]
+      }
+    },
+    "DeploymentRole": {
+      "name": "DeploymentRole",
+      "arn": "arn:aws:iam::111122223333:role/DeploymentRole",
+      "type": "role",
+      "policies": [
+        {
+          "source": "AttachedManagedPolicy:DeploymentPolicy",
+          "document": {"Statement": [{"Effect": "Allow", "Action": ["lambda:UpdateFunctionCode"], "Resource": "*"}]}
+        }
+      ],
+      "trust_policy": {
+        "Statement": [
+          {"Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}
+        ]
+      }
+    }
+  },
+  "groups": {
+    "developers": {
+      "name": "developers",
+      "policies": [
+        {
+          "source": "InlinePolicy:self-service",
+          "document": {"Statement": [{"Effect": "Allow", "Action": "iam:AttachUserPolicy", "Resource": "*"}]}
+        }
+      ],
+      "members": ["alice", "dev-lead"]
+    }
+  }
+}
