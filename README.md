@@ -12,6 +12,13 @@ low-privilege principal to `AdministratorAccess`. That's how real breaches
 escalate (Capital One, the Codecov supply-chain breach, most cloud
 ransomware playbooks) — config scanners don't catch it, this does.
 
+![Findings report](screenshots/report.png)
+
+The attack-path graph is interactive (drag, zoom, hover) in the actual HTML
+output — this is a static capture of the demo fixture above:
+
+![Attack path graph](screenshots/graph.png)
+
 ## Quickstart (zero AWS setup)
 
 ```bash
