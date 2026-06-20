@@ -19,6 +19,12 @@ output — this is a static capture of the demo fixture above:
 
 ![Attack path graph](screenshots/graph.png)
 
+**Companion tool**: [cloudtrail-privesc-detector](https://github.com/harryc295/cloudtrail-privesc-detector)
+watches real CloudTrail activity for these same techniques actually being
+used, instead of just possible — feed its `--admin-roles` flag this
+project's `already-admin-equivalent` findings and every AssumeRole/PassRole
+alert there resolves to a confirmed severity instead of a guess.
+
 ## Quickstart (zero AWS setup)
 
 ```bash
@@ -104,8 +110,8 @@ including the deny-overrides-allow and group-inheritance cases.
 
 ## Roadmap
 
-- CloudTrail/GuardDuty detection rule + one-page incident-response runbook
-  per finding type (closes the detect-and-respond loop)
+- ~~CloudTrail detection rules + incident-response runbooks~~ — shipped as
+  [cloudtrail-privesc-detector](https://github.com/harryc295/cloudtrail-privesc-detector)
 - Multi-account scan via AWS Organizations
 - Optional `simulate_principal_policy` confirmation pass to cut false positives
 
